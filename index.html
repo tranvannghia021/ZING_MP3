@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Music player</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.2/css/all.min.css" integrity="sha512-HK5fgLBL+xu6dm/Ii3z4xhlSUyZgTT9tuc/hSrtw6uzJOvgRr2a9jyxxT1ely+B+xFAmJKVSTbpM/CuL7qxO8w==" crossorigin="anonymous" />
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="./assets/css/style.css">
+</head>
+<body>
+    
+<div class="player">
+    <!-- Dashboard -->
+    <div class="dashboard">
+      <!-- Header -->
+      <header>
+        <h4>Now playing:</h4>
+        <h2>String 57th & 9th</h2>
+      </header>
+  
+      <!-- CD -->
+      <div class="cd">
+        <div class="cd-thumb" style="background-image: url('https://i.ytimg.com/vi/jTLhQf5KJSc/maxresdefault.jpg')">
+        </div>
+      </div>
+  
+      <!-- Control -->
+      <div class="control">
+        <div class="btn btn-repeat">
+          <i class="fas fa-redo"></i>
+        </div>
+        <div class="btn btn-prev">
+          <i class="fas fa-step-backward"></i>
+        </div>
+        <div class="btn btn-toggle-play">
+          <i class="fas fa-pause icon-pause"></i>
+          <i class="fas fa-play icon-play"></i>
+        </div>
+        <div class="btn btn-next">
+          <i class="fas fa-step-forward"></i>
+        </div>
+        <div class="btn btn-random">
+          <i class="fas fa-random"></i>
+        </div>
+      </div>
+  
+      <input id="progress" class="progress" type="range" value="0" step="1" min="0" max="100">
+  
+      <audio id="audio" src=""></audio>
+    </div>
+  
+    <!-- Playlist -->
+    <div class="playlist">
+     
+     
+      </div>
+    </div>
+  </div>
+  <script>
+      const $ =document.querySelector.bind(document);
+      const $$= document.querySelectorAll.bind(document);
+      const app ={
+          currentIndex:0,
+          songs: [
+              {
+                  name: 'yêu là cưới',
+                  singer: 'Phát Hồ',
+                  path: './assets/music/song-1.mp3',
+                  image:'./assets/img/song-1.jpg'
+              },
+              {
+                  name: 'Chưa bao giờ quên em',
+                  singer: 'Hương Ly',
+                  path: './assets/music/song-2.mp3',
+                  image:'./assets/img/song-2.jpg'
+              },
+              {
+                  name: 'Độ tộc 2',
+                  singer: 'Masew,Phúc Du,Mixigaming,Pháo',
+                  path: './assets/music/song-3.mp3',
+                  image:'./assets/img/song-3.jpg'
+              },
+              {
+                  name: 'Em là con thuyền cô đơn',
+                  singer: 'Thái Học',
+                  path: './assets/music/song-4.mp3',
+                  image:'./assets/img/song-4.jpg'
+              },
+              {
+                  name: 'Người lạ thoáng qua',
+                  singer: 'Đinh Hùng Huy,ACV',
+                  path: './assets/music/song-5.mp3',
+                  image:'./assets/img/song-5.jpg'
+              },
+              {
+                  name: 'Khuê mộc lan',
+                  singer: 'Hương Ly,Jombie',
+                  path: './assets/music/song-6.mp3',
+                  image:'./assets/img/song-6.jpg'
+              },
+              {
+                  name: 'Rồi tới luôn',
+                  singer: 'Nal',
+                  path: './assets/music/song-7.mp3',
+                  image:'./assets/img/song-7.jpg'
+              },
+              {
+                  name: 'Khi thế giới đó mất đi',
+                  singer: 'Hương Ly,Tăng phúc',
+                  path: './assets/music/song-8.mp3',
+                  image:'./assets/img/song-8.jpg'
+              },
+              {
+                  name: 'Nếu có kiếp sau',
+                  singer: 'Hương Ly',
+                  path: './assets/music/song-9.mp3',
+                  image:'./assets/img/song-9.jpg'
+              },
+              {
+                  name: 'Sầu tương tư',
+                  singer: 'Nhật Phong',
+                  path: './assets/music/song-10.mp3',
+                  image:'./assets/img/song-10.jpg'
+              }
+          ],
+          render: function(){
+            const htmls= this.songs.map(song =>{
+                return ` 
+                <div class="song">
+                    <div class="thumb" 
+                        style="background-image: url('${song.image}')">
+                     </div>
+                    <div class="body">
+                        <h3 class="title">${song.name}</h3>
+                        <p class="author">${song.singer}</p>
+                    </div>
+                    <div class="option">
+                        <i class="fas fa-ellipsis-h"></i>
+                    </div>
+                </div>`;
+
+            });
+            $('.playlist').innerHTML = htmls.join('');
+          },   
+          defineProperties:function(){
+            Object.defineProperty(this,'currentSong',{
+                get:function(){
+                    return this.songs[this.currentIndex];
+                }
+            });
+          },
+          handleEvents:function(){
+              const cd =$('.cd');
+              const cdWidth =cd.offsetWidth;
+              document.onscroll=function(){
+                 const scrollTop= window.scrollY ||document.documentElement.scrollTop;
+                 const newCdWidth=cdWidth-scrollTop;
+                 cd.style.width= newCdWidth >0 ? newCdWidth + 'px' :0;
+                 cd.style.opacity=newCdWidth /cdWidth ;
+              }
+          },
+          loadCurretnSong:function(){
+              const heading =$('header h2');
+              const cdThumb= $('.cd-thumb');
+              const audio =$('#audio');
+            heading.textContent= this.currentSong.name;
+            cdThumb.style.backgroundImage = `url('${this.currentSong.image}')`;
+            audio.src=this.currentSong.path;
+
+          },
+          start: function(){
+              // Định nghĩa các thuộc tính cho object
+              this.defineProperties();
+              //Lắng nghe /xử lý các sự kiện (DOM events)
+              this.handleEvents();
+              //tải thông tin bài hát đầu tiên vào UI khi start ứng dụng
+              this.loadCurretnSong();
+              //render playlist
+                 this.render();
+              }
+        }
+        app.start();
+  </script>
+</body>
+</html>
