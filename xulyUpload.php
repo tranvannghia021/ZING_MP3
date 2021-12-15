@@ -1,7 +1,10 @@
 <?php
-require_once './connection.php';
-require_once './assets/class/insert.php';
-$insert = new insert;
+require_once './API/config/connection.php';
+require_once './API/model/insert.php';
+$conn = new connection;
+$db = $conn->connect();
+$insert = new insert($db);
+
 
 $arrImg = ['jpg', 'jpeg', 'png'];
 $arrMusic = ['mpeg', 'mp4'];
@@ -36,7 +39,7 @@ if (isset($_POST['fullname'])) {
                     echo 'file nhạc quá lớn';
                 } else {
                     move_uploaded_file($_FILES['FileMuic']['tmp_name'], 'assets/music/' . $_FILES['FileMuic']['name']);
-                    $insert->addMusic($tenbaihat, $tencasi, $_FILES['Fileimg']['name'], $_FILES['FileMuic']['name']);
+                    $insert->addMusic($tenbaihat, $tencasi, "./assets/img/" . $_FILES['Fileimg']['name'], "./assets/music/" . $_FILES['FileMuic']['name']);
                 }
             } else {
                 echo "file nhạc phải là 'mp3','mp4'";

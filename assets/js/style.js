@@ -14,101 +14,154 @@ const btnRandom=$('.btn-random');
 const btnRepeat =$('.btn-repeat');
 const playList =$('.playlist');
 
+
+
+
 const app ={
   currentIndex:0,
   isPlaying:false,
   isRandom:false,
   isRepeat:false,
   config:JSON.parse(localStorage.getItem(PLAYER_STORAGE_KEY)) ||{},
-    songs: [
-        {
-            name: 'yêu là cưới',
-            singer: 'Phát Hồ',
-            path: './assets/music/song-1.mp3',
-            image:'./assets/img/song-1.jpg'
-        },
-        {
-            name: 'Chưa bao giờ quên em',
-            singer: 'Hương Ly',
-            path: './assets/music/song-2.mp3',
-            image:'./assets/img/song-2.jpg'
-        },
-        {
-            name: 'Độ tộc 2',
-            singer: 'Masew,Phúc Du,Mixigaming,Pháo',
-            path: './assets/music/song-3.mp3',
-            image:'./assets/img/song-3.jpg'
-        },
-        {
-            name: 'Em là con thuyền cô đơn',
-            singer: 'Thái Học',
-            path: './assets/music/song-4.mp3',
-            image:'./assets/img/song-4.jpg'
-        },
-        {
-            name: 'Người lạ thoáng qua',
-            singer: 'Đinh Hùng Huy,ACV',
-            path: './assets/music/song-5.mp3',
-            image:'./assets/img/song-5.jpg'
-        },
-        {
-            name: 'Khuê mộc lan',
-            singer: 'Hương Ly,Jombie',
-            path: './assets/music/song-6.mp3',
-            image:'./assets/img/song-6.jpg'
-        },
-        {
-            name: 'Rồi tới luôn',
-            singer: 'Nal',
-            path: './assets/music/song-7.mp3',
-            image:'./assets/img/song-7.jpg'
-        },
-        {
-            name: 'Khi thế giới đó mất đi',
-            singer: 'Hương Ly,Tăng phúc',
-            path: './assets/music/song-8.mp3',
-            image:'./assets/img/song-8.jpg'
-        },
-        {
-            name: 'Nếu có kiếp sau',
-            singer: 'Hương Ly',
-            path: './assets/music/song-9.mp3',
-            image:'./assets/img/song-9.jpg'
-        },
-        {
-            name: 'Sầu tương tư',
-            singer: 'Nhật Phong',
-            path: './assets/music/song-10.mp3',
-            image:'./assets/img/song-10.jpg'
-        }
-    ],
-    setConfig:function(key,value){
+    // songs1: [
+    //     {
+    //         name: 'yêu là cưới',
+    //         singer: 'Phát Hồ',
+    //         path: './assets/music/song-1.mp3',
+    //         image:'./assets/img/song-1.jpg'
+    //     },
+    //     {
+    //         name: 'Chưa bao giờ quên em',
+    //         singer: 'Hương Ly',
+    //         path: './assets/music/song-2.mp3',
+    //         image:'./assets/img/song-2.jpg'
+    //     },
+    //     {
+    //         name: 'Độ tộc 2',
+    //         singer: 'Masew,Phúc Du,Mixigaming,Pháo',
+    //         path: './assets/music/song-3.mp3',
+    //         image:'./assets/img/song-3.jpg'
+    //     },
+    //     {
+    //         name: 'Em là con thuyền cô đơn',
+    //         singer: 'Thái Học',
+    //         path: './assets/music/song-4.mp3',
+    //         image:'./assets/img/song-4.jpg'
+    //     },
+    //     {
+    //         name: 'Người lạ thoáng qua',
+    //         singer: 'Đinh Hùng Huy,ACV',
+    //         path: './assets/music/song-5.mp3',
+    //         image:'./assets/img/song-5.jpg'
+    //     },
+    //     {
+    //         name: 'Khuê mộc lan',
+    //         singer: 'Hương Ly,Jombie',
+    //         path: './assets/music/song-6.mp3',
+    //         image:'./assets/img/song-6.jpg'
+    //     },
+    //     {
+    //         name: 'Rồi tới luôn',
+    //         singer: 'Nal',
+    //         path: './assets/music/song-7.mp3',
+    //         image:'./assets/img/song-7.jpg'
+    //     },
+    //     {
+    //         name: 'Khi thế giới đó mất đi',
+    //         singer: 'Hương Ly,Tăng phúc',
+    //         path: './assets/music/song-8.mp3',
+    //         image:'./assets/img/song-8.jpg'
+    //     },
+    //     {
+    //         name: 'Nếu có kiếp sau',
+    //         singer: 'Hương Ly',
+    //         path: './assets/music/song-9.mp3',
+    //         image:'./assets/img/song-9.jpg'
+    //     },
+    //     {
+    //         name: 'Sầu tương tư',
+    //         singer: 'Nhật Phong',
+    //         path: './assets/music/song-10.mp3',
+    //         image:'./assets/img/song-10.jpg'
+    //     }
+    // ],
+   
+  setConfig:function(key,value){
       this.config[key] =value;
       localStorage.setItem(PLAYER_STORAGE_KEY,JSON.stringify(this.config));
     },
-    render: function(){
-      const htmls= this.songs.map((song,index) =>{
-          return ` 
-          <div class="song ${index===this.currentIndex ? 'active' :' '}" data-index="${index}">
-              <div class="thumb" 
-                  style="background-image: url('${song.image}')">
-               </div>
-              <div class="body">
-                  <h3 class="title">${song.name}</h3>
-                  <p class="author">${song.singer}</p>
-              </div>
-              <div class="option">
-                  <i class="fas fa-ellipsis-h"></i>
-              </div>
-          </div>`;
+    render: function (){
+      let url='https://jsonplaceholder.typicode.com/posts';
+      fetch(url)
+      .then(function(Response){
+        return Response.json();
+      })
+      .then(function(data){
+        var arr= [...data];
+       var html = data.map(function(song,index){
+        return ` 
+        <div class="song ${index===this.currentIndex ? 'active' :' '}" data-index="${index}">
+            <div class="thumb" 
+                style="background-image: url('${song.userId}')">
+             </div>
+            <div class="body">
+                <h3 class="title">${song.body}</h3>
+                <p class="author">${song.title}</p>
+            </div>
+            <div class="option">
+                <i class="fas fa-ellipsis-h"></i>
+            </div>
+        </div>`;
+       });
+       playList.innerHTML = html.join('');
 
+      })
+      .catch(function(err){
+        console.log(err);
       });
-      playList.innerHTML = htmls.join('');
-    },   
+      return arr;
+    },
+    // render: function(){
+    //   // let musics = this.getFetch();
+    //   // let html='';
+    //   // musics.forEach((song,index) =>{
+    //   //   let htmlSegment=`<div class="song ${index===this.currentIndex ? 'active' :' '}" data-index="${index}">
+    //   //           <div class="thumb" 
+    //   //               style="background-image: url('${song.image}')">
+    //   //            </div>
+    //   //           <div class="body">
+    //   //               <h3 class="title">${song.name}</h3>
+    //   //               <p class="author">${song.singer}</p>
+    //   //           </div>
+    //   //           <div class="option">
+    //   //               <i class="fas fa-ellipsis-h"></i>
+    //   //           </div>
+    //   //       </div>`;
+    //   //       html +=htmlSegment;
+    //   // });
+    //   // playList.innerHTML=html;
+    //   // const htmls= musics.map((song,index) =>{
+    //   //     return ` 
+    //   //     <div class="song ${index===this.currentIndex ? 'active' :' '}" data-index="${index}">
+    //   //         <div class="thumb" 
+    //   //             style="background-image: url('${song.image}')">
+    //   //          </div>
+    //   //         <div class="body">
+    //   //             <h3 class="title">${song.name}</h3>
+    //   //             <p class="author">${song.singer}</p>
+    //   //         </div>
+    //   //         <div class="option">
+    //   //             <i class="fas fa-ellipsis-h"></i>
+    //   //         </div>
+    //   //     </div>`;
+
+    //   // });
+    //   // playList.innerHTML = htmls.join('');
+    // },   
     defineProperties:function(){
       Object.defineProperty(this,'currentSong',{
           get:function(){
-              return this.songs[this.currentIndex];
+              return this.arr[this.currentIndex];
           }
       });
      
@@ -281,10 +334,11 @@ const app ={
         //tải thông tin bài hát đầu tiên vào UI khi start ứng dụng
         this.loadCurretnSong();
         //render playlist
-           this.render();
+           app.render();
            //hien thi trang thái ban đầu của btn 
            btnRandom.classList.toggle('active',app.isRandom);
            btnRepeat.classList.toggle('active',app.isRepeat);
         }
   }
   app.start();
+
