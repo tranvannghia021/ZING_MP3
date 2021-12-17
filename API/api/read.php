@@ -10,7 +10,8 @@ $rs = $listMusic->Read();
 $num = $rs->rowCount();
 if ($num > 0) {
     $post_array = [];
-    $post_array['songs'] = [];
+
+
     while ($row = $rs->fetch(PDO::FETCH_ASSOC)) {
         extract($row);
         $question_item = array(
@@ -21,7 +22,7 @@ if ($num > 0) {
             'image' => $img,
 
         );
-        array_push($post_array['songs'], $question_item);
+        array_push($post_array, $question_item);
     }
     echo json_encode($post_array);
 }
